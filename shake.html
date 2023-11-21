@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Image Shake Animation</title>
+<style>
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas" width="1284" height="1200"></canvas>
+
+<script>
+// 画像の読み込み
+var img = new Image();
+img.src = 'otaku_girl_fashion_penlight.png'; // 画像のパスに替えてください
+img.onload = function() {
+  shakeImage();
+};
+
+function shakeImage() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let startTime = Date.now();
+  const duration = 1000; // シェイクする時間（ミリ秒）
+  const amplitude = 100; // シェイクの振幅
+  const waitTime = 3000; // シェイクの間の待機時間（ミリ秒）
+
+  function animate() {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - startTime;
+
+    if (elapsedTime < duration) {
+      const y = Math.sin(elapsedTime / duration * Math.PI * 4) * amplitude;
+      drawImageAt(ctx, y);
+      requestAnimationFrame(animate);
+    } else {
+      // シェイク後に待機
+      setTimeout(() => {
+        startTime = Date.now(); // startTimeをリセットして再度シェイク
+        animate();
+      }, waitTime);
+    }
+  }
+
+  animate();
+}
+
+
+
+function drawImageAt(ctx, y) {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // 画面をクリア
+  ctx.drawImage(img, 0, y + canvas.height / 2 - img.height / 2); // 新しい位置に画像を描画
+}
+</script>
+
+</body>
+</html>
