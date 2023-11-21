@@ -6,7 +6,13 @@
     <script src="./sample.js" type="module"></script>
 </head>
 <body>
+    <button id="startCamera">カメラを起動</button> <!-- カメラ起動ボタンを追加 -->
     <canvas id="cvs1">Canvas_1</canvas>
     <canvas id="cvs2">Canvas_2</canvas>
+    
+    <script type="module">
+        import { Camera_Open } from './sample.js'; // sample.jsからCamera_Open関数をインポート
+        document.getElementById('startCamera').addEventListener('click', Camera_Open); // ボタンにイベントリスナーを追加
+    </script>
 </body>
 </html>

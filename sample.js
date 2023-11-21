@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded",
       await Promise.all([
               Get_Element(),
               Load_Images(),
-              Camera_Open(),
+              //Camera_Open(),
               Load_Modules()
         ]);
       Exe_Loop();
@@ -78,16 +78,25 @@ async function Load_Modules(){
 }
 
 //カメラ開始
-async function Camera_Open(){
+// Camera_Open関数からasyncを削除し、中身を変更
+export async function Camera_Open() {
+    const cameraAccessButton = document.createElement('button');
+    cameraAccessButton.innerText = 'カメラを起動';
+    document.body.appendChild(cameraAccessButton);
 
-    stream = await navigator.mediaDevices.getUserMedia({
-        video:  true,
-        audio:  false
+    cameraAccessButton.addEventListener('click', async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: false
+            });
+            video.srcObject = stream;
+            video.play();
+            Exe_Loop();
+        } catch (error) {
+            console.error('カメラアクセスエラー:', error);
+        }
     });
-
-    video.srcObject = stream;
-    video.play();
-
 }
 
 //実行ループ
