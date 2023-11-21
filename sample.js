@@ -61,7 +61,7 @@ async function load_image(path){
 
 //画像読込
 async function Load_Images(){
-    const b_img = await load_image("./back_img.jpg");   //背景画像
+    const b_img = await load_image("./003_1024_768.jpg");   //背景画像
     await bctxt.drawImage(b_img, 0, 0, bcvs.width, bcvs.height);
 }
 
