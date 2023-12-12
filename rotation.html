@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Image Rotation and Fast Floating Animation</title>
+<style>
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas" width="1284" height="1200"></canvas>
+
+<script>
+var img = new Image();
+img.src = 'otaku_girl_fashion_penlight_50per.png'; // 画像のパスに替えてください
+
+img.onload = function() {
+  animateImage();
+};
+
+function animateImage() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let startTime = Date.now();
+  const rotationDuration = 2000; // 回転の継続時間（ミリ秒）
+  const floatingDuration = 500; // 浮遊の継続時間を短くする（ミリ秒）
+  const totalDuration = rotationDuration + floatingDuration;
+
+  function animate() {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - startTime;
+
+    if (elapsedTime < totalDuration) {
+      drawImageAt(ctx, elapsedTime);
+      requestAnimationFrame(animate);
+    }
+  }
+
+  animate();
+}
+
+function drawImageAt(ctx, elapsedTime) {
+  const rotationDuration = 2000; // 回転の継続時間（ミリ秒）
+  const floatingDuration = 500; // 浮遊の継続時間を短くする（ミリ秒）
+
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  // 回転
+  if (elapsedTime < rotationDuration) {
+    const rotationProgress = elapsedTime / rotationDuration;
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(Math.PI * 2 * rotationProgress);
+    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  } 
+  // 浮遊
+  else {
+    const floatingProgress = (elapsedTime - rotationDuration) / floatingDuration;
+    const x = floatingProgress * canvas.width / 2; // 右上に移動
+    const y = -floatingProgress * canvas.height / 2; // 上に移動
+    ctx.drawImage(img, canvas.width / 2 + x - img.width / 2, canvas.height / 2 + y - img.height / 2);
+  }
+}
+
+</script>
+
+</body>
+</html>
