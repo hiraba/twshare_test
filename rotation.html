@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Image Rotation and Fast Floating Animation</title>
+<title>Image Floating with Black Wind Effect</title>
 <style>
   canvas {
     border: 1px solid black;
@@ -26,7 +26,7 @@ function animateImage() {
   const ctx = canvas.getContext('2d');
   let startTime = Date.now();
   const rotationDuration = 2000; // 回転の継続時間（ミリ秒）
-  const floatingDuration = 500; // 浮遊の継続時間を短くする（ミリ秒）
+  const floatingDuration = 500; // 浮遊の継続時間（ミリ秒）
   const totalDuration = rotationDuration + floatingDuration;
 
   function animate() {
@@ -44,7 +44,7 @@ function animateImage() {
 
 function drawImageAt(ctx, elapsedTime) {
   const rotationDuration = 2000; // 回転の継続時間（ミリ秒）
-  const floatingDuration = 500; // 浮遊の継続時間を短くする（ミリ秒）
+  const floatingDuration = 500; // 浮遊の継続時間（ミリ秒）
 
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -61,7 +61,28 @@ function drawImageAt(ctx, elapsedTime) {
     const floatingProgress = (elapsedTime - rotationDuration) / floatingDuration;
     const x = floatingProgress * canvas.width / 2; // 右上に移動
     const y = -floatingProgress * canvas.height / 2; // 上に移動
+    drawWindEffect(ctx, x, y, floatingProgress);
     ctx.drawImage(img, canvas.width / 2 + x - img.width / 2, canvas.height / 2 + y - img.height / 2);
+  }
+}
+
+function drawWindEffect(ctx, x, y, floatingProgress) {
+  const windLines = 10; // 風の線の数
+  const startX = canvas.width / 2 + x; // 風の開始位置
+  const startY = canvas.height / 2 + y;
+
+  ctx.strokeStyle = 'black'; // 線の色を黒に変更
+  ctx.lineWidth = 2;
+
+  for (let i = 0; i < windLines; i++) {
+    const length = 20 + 30 * floatingProgress; // 線の長さ
+    const angle = Math.random() * Math.PI * 2; // 線の方向
+    const endX = startX + length * Math.cos(angle);
+    const endY = startY + length * Math.sin(angle);
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
   }
 }
 
